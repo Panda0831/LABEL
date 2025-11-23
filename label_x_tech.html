@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LabelX Tech | Innovation numérique & solutions sur-mesure</title>
+  <meta name="description" content="Agence full-stack premium : React, Node.js, Python, Mobile, Automatisation, DevOps"/>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { bg: '#000000', fg: '#ffffff', muted: '#aaaaaa', border: '#1a1a1a', card: '#0a0a0a' },
+          fontFamily: { satoshi: ['Satoshi', 'sans-serif'] },
+          animation: { marquee: 'marquee 40s linear infinite', glitch: 'glitch 2s infinite', float: 'float 6s ease-in-out infinite' },
+          keyframes: {
+            marquee: { '0%': { transform: 'translateX(0%)' }, '100%': { transform: 'translateX(-100%)' } },
+            glitch: { '0%,100%': { transform: 'translate(0)' }, '20%': { transform: 'translate(-2px,2px)' }, '40%': { transform: 'translate(-2px,-2px)' }, '60%': { transform: 'translate(2px,2px)' }, '80%': { transform: 'translate(2px,-2px)' } },
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Satoshi:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    body { background:#000; color:#fff; overflow-x:hidden; }
+    h1,h2,h3,h4,h5,h6 { font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+    .logo-glow { filter: drop-shadow(0 0 40px rgba(255,255,255,0.6)); }
+    .logo-glitch:hover { animation: glitch 1.5s infinite; }
+    .card { background:#0a0a0a; border:1px solid #1a1a1a; transition:all .5s cubic-bezier(.165,.84,.44,1); }
+    .card:hover { transform:translateY(-16px) scale(1.04); border-color:#fff; box-shadow:0 30px 60px rgba(255,255,255,0.1); }
+    .team-card img { filter:grayscale(100%) brightness(0.9); transition:filter .8s ease; }
+    .team-card:hover img { filter:grayscale(0%) brightness(1.1); }
+    .noise { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9998;
+      background:url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      opacity:0.06; mix-blend-mode:overlay; }
+    .scanlines { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9998;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.03) 2px,rgba(255,255,255,0.03) 4px);
+      opacity:0.04; animation:scan 8s linear infinite; }
+    @keyframes scan { 0%{transform:translateY(0)} 100%{transform:translateY(4px)} }
+    .cursor { pointer-events:none; position:fixed; z-index:9999; }
+    .cursor::before { content:''; position:absolute; width:10px; height:10px; background:#fff; border-radius:50%; transform:translate(-50%,-50%); mix-blend-mode:difference; box-shadow:0 0 20px #fff; }
+    .cursor.hover::before { transform:translate(-50%,-50%) scale(3); background:transparent; }
+  </style>
+</head>
+<body class="bg-bg text-fg">
+
+  <div class="noise"></div>
+  <div class="scanlines"></div>
+  <div class="cursor"></div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed inset-0 bg-black z-50 hidden flex-col justify-center items-center text-6xl gap-16">
+    <a href="#home" class="hover:text-white/70 transition">Accueil</a>
+    <a href="#team" class="hover:text-white/70 transition">Équipe</a>
+    <a href="#services" class="hover:text-white/70 transition">Services</a>
+    <a href="#contact" class="hover:text-white/70 transition">Contact</a>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full bg-black/95 backdrop-blur-xl z-40 border-b border-border">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+      <a href="#" class="logo-glow logo-glitch"><img src="img/logo.png" alt="LabelX Tech" class="h-12"></a>
+      <div class="hidden lg:flex space-x-12 text-sm uppercase tracking-widest">
+        <a href="#home" class="hover:text-white text-muted transition">Accueil</a>
+        <a href="#team" class="hover:text-white text-muted transition">Équipe</a>
+        <a href="#services" class="hover:text-white text-muted transition">Services</a>
+        <a href="#contact" class="hover:text-white text-muted transition">Contact</a>
+      </div>
+      <button id="menu-btn" class="lg:hidden text-white">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <canvas id="hero-canvas" class="absolute inset-0"></canvas>
+    <div class="relative z-10 text-center px-6" data-aos="fade-up">
+      <img src="img/logo.png" alt="LabelX Tech" class="h-64 mx-auto mb-10 logo-glow logo-glitch animate-float">
+      <h1 class="text-7xl md:text-9xl font-black tracking-tighter bg-gradient-to-r from-white via-muted to-white bg-clip-text text-transparent">
+        LABELX TECH
+      </h1>
+      <p class="text-2xl md:text-4xl text-muted mt-6">Une fenêtre pour voir au-delà de la technologie</p>
+      <a href="#team" class="mt-12 inline-block bg-white text-black px-12 py-5 rounded-full font-bold text-lg hover:bg-white/90 transition">
+        Découvrir l'équipe
+      </a>
+    </div>
+  </section>
+
+  <!-- ÉQUIPE — LES 9 MEMBRES COMPLÉTÉS -->
+  <section id="team" class="py-32 px-6">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-6xl font-black text-center mb-20" data-aos="fade-up">Notre équipe</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+        <div class="card team-card rounded-2xl overflow-hidden" data-aos="fade-up"><img src="img/trinity.png" alt="Trinity" class="w-full h-96 object-cover"><div class="p-8"><h3 class="text-2xl font-black">Trinity</h3><p class="text-white/70 text-sm mb-4">Full-Stack Polyvalent • UI/UX • Relation Client</p><ul class="text-xs text-muted space-y-1"><li>• React, Vue 3, SvelteKit, Next.js, Tailwind</li><li>• Node.js, Express, NestJS</li><li>• PostgreSQL, MySQL, MongoDB, optimisation</li><li>• Figma, prototypes, charte graphique</li><li>• Prospection, devis, RDV physiques</li></ul></div></div>
+
+        <div class="card team-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="100"><img src="img/ryan.png" alt="Ryan" class="w-full h-96 object-cover"><div class="p-8"><h3 class="text-2xl font-black">Ryan</h3><p class="text-white/70 text-sm mb-4">Python & Automatisation Expert</p><ul class="text-xs text-muted space-y-1"><li>• Python : Django, FastAPI, scripting avancé</li><li>• Automatisation : n8n, Make.com, Activepieces</li><li>• Bases de données & workflows complexes</li></ul></div></div>
+
+        <div class="card team-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="200"><img src="img/tang.jpg" alt="Tang Aimelie" class="w-full h-96 object-cover"><div class="p-8"><h3 class="text-2xl font-black">Tang Aimelie</h3><p class="text-white/70 text-sm mb-4">UI/UX Designer • Relation Client</p><ul class="text-xs text-muted space-y-1"><li>• Figma, prototypes interactifs, charte graphique</li><li>• Refonte visuelle & branding</li><li>• Prospection, devis, RDV physiques</li></ul></div></div>
+
+        <div class="card team-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="300"><img src="img/joyce.png" alt="Joyce" class="w-full h-96 object-cover"><div class="p-8"><h3 class="text-2xl font-black">Joyce</h3><p class="text-white/70 text-sm mb-4">Full-Stack • Mobile • PHP</p><ul class="text-xs text-muted space-y-1"><li>• React, Vue, Next.js, HTML/CSS</li><li>• Node.js, Express, NestJS</li><li>• PHP : Laravel, Symfony, WordPress custom</li><li>• React Native</li><li>• PostgreSQL, MySQL, MongoDB</li></ul></div></div>
+
+        <div class="card team-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="400"><img src="img/" alt="Eric" class="w-full h-96 object-cover"><div class="p-8"><h3 class="text-2xl font-black">Eric</h3><p class="text-white/70 text-sm mb-4">Senior Back-end & Mobile</p><ul class="text-xs text-muted space-y-1"><li>• NestJS, FastAPI, Node.js</li><li>• React Native (architecture)</li><li>• Front-end & UI/UX contribution</li></ul></div></div>
+
+        <div class="card team-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="500"><img src="https://via.placeholder.com/600/111/fff?text=JODA" alt="Joda" class="w-full h-96 object-cover"><div class="p-8"><h3 class="text-2xl font-black">Joda</h3><p class="text-white/70 text-sm mb-4">Back-end Engineer</p><ul class="text-xs text-muted space-y-1"><li>• Node.js, Express, NestJS</li><li>• Python : Django, Flask</li><li>• Front-end contribution</li></ul></div></div>
+
+        <div class="card team-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="600"><img src="img/tendry.png" alt="Tendry" class="w-full h-96 object-cover"><div class="p-8"><h3 class="text-2xl font-black">Tendry</h3><p class="text-white/70 text-sm mb-4">Front-end Specialist</p><ul class="text-xs text-muted space-y-1"><li>• React, Vue 3, SvelteKit, Next.js, Tailwind</li><li>• Animations avancées</li><li>• UI/UX contribution</li></ul></div></div>
+
+        <div class="card team-card rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="700"><img src="img/fanamby.png" alt="Fanamby" class="w-full h-96 object-cover"><div class="p-8"><h3 class="text-2xl font-black">Fanamby</h3><p class="text-white/70 text-sm mb-4">DevOps & Organisation</p><ul class="text-xs text-muted space-y-1"><li>• Docker, Docker-Compose, CI/CD</li><li>• Hetzner, OVH, VPS, haute dispo</li><li>• Notion, ClickUp, Trello, gestion deadlines</li></ul></div></div>
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Services + Marquee + Footer -->
+  <section id="services" class="py-32 px-6 bg-card/30">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-6xl font-black text-center mb-20" data-aos="fade-up">Nos services</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div class="card p-10 rounded-2xl" data-aos="fade-up"><h3 class="text-2xl font-black mb-6">Développement Full-Stack</h3><ul class="text-sm text-muted space-y-3"><li>• React, Next.js, Vue, SvelteKit</li><li>• Node.js, NestJS, FastAPI, Laravel</li><li>• PostgreSQL, MongoDB</li><li>• React Native</li></ul></div>
+        <div class="card p-10 rounded-2xl" data-aos="fade-up" data-aos-delay="100"><h3 class="text-2xl font-black mb-6">UI/UX Design & Branding</h3><ul class="text-sm text-muted space-y-3"><li>• Figma, prototypes interactifs</li><li>• Refonte visuelle & charte graphique</li><li>• Design system</li></ul></div>
+        <div class="card p-10 rounded-2xl" data-aos="fade-up" data-aos-delay="200"><h3 class="text-2xl font-black mb-6">Automatisation No/Low-Code</h3><ul class="text-sm text-muted space-y-3"><li>• n8n, Make.com, Activepieces</li><li>• Workflows complexes</li></ul></div>
+        <div class="card p-10 rounded-2xl" data-aos="fade-up" data-aos-delay="300"><h3 class="text-2xl font-black mb-6">DevOps & Infrastructure</h3><ul class="text-sm text-muted space-y-3"><li>• Docker, CI/CD</li><li>• Hetzner, OVH, DigitalOcean</li></ul></div>
+        <div class="card p-10 rounded-2xl" data-aos="fade-up" data-aos-delay="400"><h3 class="text-2xl font-black mb-6">Relation Client</h3><ul class="text-sm text-muted space-y-3"><li>• Devis, prospection, RDV</li><li>• Suivi client</li></ul></div>
+        <div class="card p-10 rounded-2xl" data-aos="fade-up" data-aos-delay="500"><h3 class="text-2xl font-black mb-6">Gestion de Projet Agile</h3><ul class="text-sm text-muted space-y-3"><li>• Notion, ClickUp, Trello</li><li>• Sprints & reporting</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="border-t border-border py-12 overflow-hidden">
+    <div class="marquee text-3xl">
+      <div class="flex animate-marquee">
+        <span class="mx-10">React</span><span class="mx-10">Next.js</span><span class="mx-10">Vue</span><span class="mx-10">SvelteKit</span>
+        <span class="mx-10">Node.js</span><span class="mx-10">NestJS</span><span class="mx-10">Python</span><span class="mx-10">Docker</span>
+        <span class="mx-10">PostgreSQL</span><span class="mx-10">n8n</span><span class="mx-10">Figma</span><span class="mx-10">Tailwind</span>
+        <span class="mx-10">React</span><span class="mx-10">Next.js</span><span class="mx-10">Vue</span><span class="mx-10">SvelteKit</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-16 text-center border-t border-border">
+    <img src="https://i.ibb.co/0jZ4KxK/labelx-tech-logo.png" alt="LabelX Tech" class="h-12 mx-auto mb-6 logo-glow">
+    <p class="text-muted text-sm">© 2025 LabelX Tech – Tous droits réservés</p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({duration:1200,once:true});
+    const cursor=document.querySelector('.cursor');
+    document.addEventListener('mousemove',e=>cursor.style.transform=`translate(${e.clientX}px,${e.clientY}px)`);
+    document.querySelectorAll('a,button,.card').forEach(el=>{el.addEventListener('mouseenter',()=>cursor.classList.add('hover'));el.addEventListener('mouseleave',()=>cursor.classList.remove('hover'));});
+    document.getElementById('menu-btn').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('hidden'));
+
+    // Hero canvas
+    const canvas=document.getElementById('hero-canvas'),ctx=canvas.getContext('2d');
+    canvas.width=innerWidth; canvas.height=innerHeight;
+    const particles=[];
+    for(let i=0;i<80;i++) particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5});
+    function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.strokeStyle='rgba(255,255,255,0.08)';particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;particles.forEach(q=>{const d=Math.hypot(p.x-q.x,p.y-q.y);if(d<120){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}})});requestAnimationFrame(animate);}
+    animate();
+    window.addEventListener('resize',()=>{canvas.width=innerWidth;canvas.height=innerHeight;});
+  </script>
+</body>
+</html>
